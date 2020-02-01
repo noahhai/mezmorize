@@ -478,7 +478,7 @@ if HAS_MEMCACHE:
         def test_mc_large_value(self):
             for client_name in AVAIL_MEMCACHES:
                 self.setup(client_name=client_name)
-                yield check_too_big, self.cache, BIGINT
+                yield check_too_big, self.cache, BIGGERINT
                 self.teardown()
 
 else:
@@ -502,7 +502,7 @@ if HAS_MEMCACHE:
         def test_mc_large_value(self):
             for client_name in AVAIL_MEMCACHES:
                 self.setup(client_name=client_name)
-                yield check_too_big, self.cache, BIGINT
+                yield check_too_big, self.cache, BIGGERINT
                 self.teardown()
 
 else:
