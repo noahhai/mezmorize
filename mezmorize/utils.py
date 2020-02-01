@@ -61,7 +61,7 @@ CACHE_CONFIGS = {
     'redis': {'CACHE_TYPE': 'redis', 'CACHE_REDIS_URL': REDIS_URL},
     'filesystem': {
         'CACHE_TYPE': 'filesystem',
-        'CACHE_DIR': getenv('CACHE_DIR')
+        'CACHE_DIR': getenv('CACHE_DIR', '.')
     },
     'memcached': {
         'CACHE_TYPE': 'memcached',
