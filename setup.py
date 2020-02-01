@@ -5,8 +5,6 @@
     ~~~~~~~~~
 """
 
-from __future__ import absolute_import, division, print_function
-
 import sys
 import pkutils
 
@@ -75,8 +73,6 @@ setup(
         pkutils.LICENSES[license],
         pkutils.get_status(version),
         'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

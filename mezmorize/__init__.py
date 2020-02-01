@@ -9,9 +9,6 @@
 """
 # pylint: disable=W1636,W1637,W1638,W1639
 
-from __future__ import (
-    absolute_import, division, print_function, unicode_literals)
-
 import base64
 import hashlib
 import inspect
@@ -20,8 +17,8 @@ import warnings
 
 from importlib import import_module
 from functools import partial, wraps
+from inspect import getfullargspec
 
-from six import PY3
 from werkzeug.contrib.cache import _test_memcached_key
 
 from . import backends
@@ -29,7 +26,7 @@ from .utils import (
     DEF_THRESHOLD, DEF_DEFAULT_TIMEOUT, ENCODING, decode, get_cache_config,
     get_cache_type)
 
-__version__ = '0.25.0'
+__version__ = '0.26.0'
 __title__ = 'mezmorize'
 __package_name__ = 'mezmorize'
 __author__ = 'Reuben Cummings'
@@ -42,16 +39,8 @@ __copyright__ = 'Copyright 2015 Reuben Cummings'
 is_invalid = lambda c: not (c in {'_', '.'} or c.isalnum())
 delchars = filter(is_invalid, map(chr, range(256)))
 
-if PY3:
-    from inspect import getfullargspec
-
-    trans_tbl = ''.maketrans({k: None for k in delchars})
-    NULL_CONTROL = (trans_tbl,)
-else:
-    from inspect import getargspec as getfullargspec
-
-    NULL_CONTROL = (None, b''.join(delchars))
-
+trans_tbl = ''.maketrans({k: None for k in delchars})
+NULL_CONTROL = (trans_tbl,)
 FIRST_NC = NULL_CONTROL[0]
 
 
@@ -502,9 +491,9 @@ class Cache(object):
 
         :param fname: Name of the memoized function, or a reference to
             the function.
-        :param \*args: A list of positional parameters used with memoized
+        :param *args: A list of positional parameters used with memoized
             function.
-        :param \**kwargs: A dict of named parameters used with memoized
+        :param **kwargs: A dict of named parameters used with memoized
             function.
 
         .. note::
