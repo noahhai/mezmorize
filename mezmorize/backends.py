@@ -9,16 +9,11 @@
 """
 # pylint: disable=range-builtin-not-iterating,filter-builtin-not-iterating
 
-from __future__ import (
-    absolute_import, division, print_function, unicode_literals)
-
 import pickle
 
 from itertools import chain
 from functools import partial
 from operator import contains
-
-from six.moves import filter
 
 from werkzeug.contrib.cache import (
     NullCache, SimpleCache, MemcachedCache as _MemcachedCache, FileSystemCache,
