@@ -18,10 +18,10 @@ from os import path as p
 PARENT_DIR = p.abspath(p.dirname(__file__))
 
 sys.dont_write_bytecode = True
-requirements = set(pkutils.parse_requirements('requirements.txt'))
-dev_requirements = set(pkutils.parse_requirements('dev-requirements.txt'))
+requirements = list(pkutils.parse_requirements('requirements.txt'))
+dev_requirements = list(pkutils.parse_requirements('dev-requirements.txt'))
 optional = 'optional-requirements.txt'
-opt_requirements = set(pkutils.parse_requirements(optional))
+opt_requirements = list(pkutils.parse_requirements(optional))
 readme = pkutils.read('README.rst')
 module = pkutils.parse_module(p.join(PARENT_DIR, 'mezmorize', '__init__.py'))
 license = module.__license__
@@ -34,9 +34,10 @@ user = 'reubano'
 setup_require = [r for r in dev_requirements if 'pkutils' in r]
 
 # Optional requirements
-redis_require = {r for r in opt_requirements if r.startswith('redis')}
-mc_require = redis_require.difference(opt_requirements)
-pure_require = {r for r in opt_requirements if not r.startswith('pylibmc')}
+_redis_require = {r for r in opt_requirements if r.startswith('redis')}
+redis_require = list(_redis_require)
+mc_require = list(_redis_require.difference(opt_requirements))
+pure_require = [r for r in opt_requirements if not r.startswith('pylibmc')]
 
 setup(
     name=project,

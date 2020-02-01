@@ -26,7 +26,7 @@ from .utils import (
     DEF_THRESHOLD, DEF_DEFAULT_TIMEOUT, ENCODING, decode, get_cache_config,
     get_cache_type)
 
-__version__ = '0.26.0'
+__version__ = '0.26.1'
 __title__ = 'mezmorize'
 __package_name__ = 'mezmorize'
 __author__ = 'Reuben Cummings'
@@ -578,6 +578,8 @@ def get_cache(*args, **kwargs):
         decorator: an iterator of items
 
     Example:
+        >>> from os import getenv
+        >>>
         >>> cache = get_cache()
         >>> cache.set('key', 'value')
         >>> cache.get('key') == 'value'
@@ -589,6 +591,9 @@ def get_cache(*args, **kwargs):
         >>> if cache.client_name:
         ...     cache.cache_type == 'memcached'
         ...     cache.client_name == 'pylibmc'
+        ... elif getenv('CACHE_DIR'):
+        ...     cache.cache_type == 'filesystem'
+        ...     cache.client_name is None
         ... else:
         ...     cache.cache_type == 'simple'
         ...     cache.client_name is None
@@ -643,6 +648,7 @@ def memoize(*args, **kwargs):
 
     Example:
         >>> import random
+        >>> from os import getenv
         >>>
         >>> get_rand = lambda: random.random()
         >>> rand_value = get_rand()
@@ -657,6 +663,9 @@ def memoize(*args, **kwargs):
         >>> if memoizer.client_name:
         ...     memoizer.cache_type == 'memcached'
         ...     memoizer.client_name == 'pylibmc'
+        ... elif getenv('CACHE_DIR'):
+        ...     memoizer.cache_type == 'filesystem'
+        ...     memoizer.client_name is None
         ... else:
         ...     memoizer.cache_type == 'simple'
         ...     memoizer.client_name is None

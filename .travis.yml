@@ -38,8 +38,8 @@ before_install:
   - |
       if [ "$TRAVIS_PYTHON_VERSION" == "pypy3" ]; then
         # https://github.com/pyenv/pyenv/tree/master/plugins/python-build/share/python-build
-        export PYPY_BUILD="pypy3.5-5.8.0"
-        export PYPY_EXEC="pypy3-v5.8.0"
+        export PYPY_BUILD="pypy3.6-7.3.0"
+        export PYPY_EXEC="pypy3-v7.3.0"
       fi
   - |
       if [[ "$TRAVIS_PYTHON_VERSION" == "pypy"* ]]; then
@@ -58,7 +58,6 @@ before_install:
         pyenv virtualenv "$PYENV_VERSION" "$PYPY_EXEC"
         pyenv activate "$PYPY_EXEC"
         python --version
-        curl https://bootstrap.pypa.io/get-pip.py | python
         pip --version
       fi
 
