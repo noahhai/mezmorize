@@ -54,7 +54,6 @@ def lint(where=None, strict=False, parallel=False):
 
     try:
         check_call(['flake8', where] if where else 'flake8')
-        check_call(args.split(' ') + ['--py3k'])
         check_call(args.split(' ')) if strict else None
     except CalledProcessError as e:
         exit(e.returncode)
