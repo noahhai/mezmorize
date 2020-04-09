@@ -7,7 +7,7 @@
 
     Provides mezmorize utility functions
 """
-from os import getenv
+from os import getenv, path as p
 from subprocess import call
 from copy import copy
 
@@ -31,6 +31,7 @@ try:
 except ImportError:
     redis = None
 
+DEF_CACHE_DIR = p.join(p.abspath(p.dirname(__file__)), 'cache')
 DEF_THRESHOLD = 500
 DEF_DEFAULT_TIMEOUT = 300
 DEF_MC_HOST = DEF_REDIS_HOST = 'localhost'
@@ -52,13 +53,15 @@ REDIS_HOST = getenv('REDIS_PORT_6379_TCP_ADDR', DEF_REDIS_HOST)
 DEF_REDIS_URL = 'redis://{}:{}'.format(REDIS_HOST, DEF_REDIS_PORT)
 REDIS_URL = getenv('REDIS_URL') or getenv('REDISTOGO_URL') or DEF_REDIS_URL
 
+CACHE_DIR = getenv('CACHE_DIR', default=DEF_CACHE_DIR)
+
 CACHE_CONFIGS = {
     'simple': {'CACHE_TYPE': 'simple'},
     'null': {'CACHE_TYPE': 'null'},
     'redis': {'CACHE_TYPE': 'redis', 'CACHE_REDIS_URL': REDIS_URL},
     'filesystem': {
         'CACHE_TYPE': 'filesystem',
-        'CACHE_DIR': getenv('CACHE_DIR', '.')
+        'CACHE_DIR': CACHE_DIR
     },
     'memcached': {
         'CACHE_TYPE': 'memcached',
@@ -98,9 +101,7 @@ AVAIL_MEMCACHES = [k for k, v in ALL_MEMCACHES if HAS_MEMCACHE and v]
 HAS_REDIS = redis and pgrep('redis')
 
 
-def get_cache_type(cache=None, spread=False, **kwargs):
-    cache_dir = kwargs.get('cache_dir', getenv('CACHE_DIR'))
-
+def get_cache_type(cache=None, spread=False, cache_dir=CACHE_DIR, **kwargs):
     if HAS_REDIS and HAS_MEMCACHE and not cache:
         cache = 'memcached'
     elif not cache:

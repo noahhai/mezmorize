@@ -15,7 +15,7 @@ from itertools import chain
 from functools import partial
 from operator import contains
 
-from werkzeug.contrib.cache import (
+from cachelib import (
     NullCache, SimpleCache, MemcachedCache as _MemcachedCache, FileSystemCache,
     RedisCache)
 

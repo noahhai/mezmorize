@@ -19,14 +19,14 @@ from importlib import import_module
 from functools import partial, wraps
 from inspect import getfullargspec
 
-from werkzeug.contrib.cache import _test_memcached_key
+from cachelib.memcached import _test_memcached_key
 
 from . import backends
 from .utils import (
     DEF_THRESHOLD, DEF_DEFAULT_TIMEOUT, ENCODING, decode, get_cache_config,
     get_cache_type)
 
-__version__ = '0.27.0'
+__version__ = '0.28.0'
 __title__ = 'mezmorize'
 __package_name__ = 'mezmorize'
 __author__ = 'Reuben Cummings'
@@ -579,6 +579,7 @@ def get_cache(*args, **kwargs):
 
     Example:
         >>> from os import getenv
+        >>> from .utils import HAS_MEMCACHE, HAS_REDIS
         >>>
         >>> cache = get_cache()
         >>> cache.set('key', 'value')
@@ -588,17 +589,25 @@ def get_cache(*args, **kwargs):
         >>> cache.get('key') is None
         True
         >>>
-        >>> if cache.client_name:
+        >>> if cache.client_name and HAS_MEMCACHE:
         ...     cache.cache_type == 'memcached'
         ...     cache.client_name == 'pylibmc'
-        ... elif getenv('CACHE_DIR'):
-        ...     cache.cache_type == 'filesystem'
+        ... elif HAS_REDIS:
+        ...     cache.cache_type == 'redis'
         ...     cache.client_name is None
         ... else:
-        ...     cache.cache_type == 'simple'
+        ...     cache.cache_type == 'filesystem'
         ...     cache.client_name is None
         True
         True
+        >>>
+        >>> cache = get_cache(cache_type='simple')
+        >>> cache.cache_type
+        'simple'
+        >>>
+        >>> cache = get_cache(cache_type='filesystem')
+        >>> cache.cache_type
+        'filesystem'
         >>>
         >>> cache = get_cache(preferred_memcache='bmemcached')
         >>>
@@ -649,6 +658,7 @@ def memoize(*args, **kwargs):
     Example:
         >>> import random
         >>> from os import getenv
+        >>> from .utils import HAS_MEMCACHE, HAS_REDIS
         >>>
         >>> get_rand = lambda: random.random()
         >>> rand_value = get_rand()
@@ -660,17 +670,25 @@ def memoize(*args, **kwargs):
         >>> memoized_rand_value == memoized_get_rand()
         True
         >>>
-        >>> if memoizer.client_name:
+        >>> if memoizer.client_name and HAS_MEMCACHE:
         ...     memoizer.cache_type == 'memcached'
         ...     memoizer.client_name == 'pylibmc'
-        ... elif getenv('CACHE_DIR'):
-        ...     memoizer.cache_type == 'filesystem'
+        ... elif HAS_REDIS:
+        ...     memoizer.cache_type == 'redis'
         ...     memoizer.client_name is None
         ... else:
-        ...     memoizer.cache_type == 'simple'
+        ...     memoizer.cache_type == 'filesystem'
         ...     memoizer.client_name is None
         True
         True
+        >>>
+        >>> memoizer = memoize(cache_type='simple')
+        >>> memoizer.cache_type
+        'simple'
+        >>>
+        >>> memoizer = memoize(cache_type='filesystem')
+        >>> memoizer.cache_type
+        'filesystem'
         >>>
         >>> memoizer = memoize(preferred_memcache='bmemcached')
         >>>
