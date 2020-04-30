@@ -276,7 +276,7 @@ class Cache(object):
             # does not break the delete_memoized functionality.
             altfname = make_name(fname) if callable(make_name) else fname
 
-            if callable(f):
+            if callable(f) and args and len(args) > 0:
                 keyargs = tuple(self._gen_args(f, *args, **kwargs))
                 keykwargs = {}
             else:
