@@ -410,7 +410,7 @@ class Cache(object):
             decorated.uncached = f
             decorated.cache_timeout = timeout
             m_make_cache_key = self._memoize_make_cache_key
-            decorated.make_cache_key = m_make_cache_key(make_name, decorated)
+            decorated.make_cache_key = m_make_cache_key(make_name, decorated, ignore_object)
             decorated.delete_memoized = partial(self.delete_memoized, f)
             return decorated
 
