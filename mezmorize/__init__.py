@@ -263,7 +263,7 @@ class Cache(object):
 
         return fname, ''.join(map(decode, version_data_list))
 
-    def _memoize_make_cache_key(self, make_name=None, decorated=None ignore_object=False):
+    def _memoize_make_cache_key(self, make_name=None, decorated=None, ignore_object=False):
         """
         Function used to create the cache_key for memoized functions.
         """
