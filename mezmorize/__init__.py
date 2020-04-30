@@ -263,11 +263,12 @@ class Cache(object):
 
         return fname, ''.join(map(decode, version_data_list))
 
-    def _memoize_make_cache_key(self, make_name=None, decorated=None):
+    def _memoize_make_cache_key(self, make_name=None, decorated=None ignore_object=False):
         """
         Function used to create the cache_key for memoized functions.
         """
         def make_cache_key(f, *args, **kwargs):
+	    args = args if not ignore_object else args[1:]
             mkwargs = {'timeout': decorated.cache_timeout} if decorated else {}
             fname, version_data = self._memoize_version(f, *args, **mkwargs)
 
@@ -322,7 +323,7 @@ class Cache(object):
 
             yield new_arg
 
-    def memoize(self, timeout=None, make_name=None, unless=None):
+    def memoize(self, timeout=None, make_name=None, unless=None, ignore_object=False):
         """
         Use this to cache the result of a function, taking its arguments into
         account in the cache key.
