@@ -268,7 +268,7 @@ class Cache(object):
         Function used to create the cache_key for memoized functions.
         """
         def make_cache_key(f, *args, **kwargs):
-	    args = args if not ignore_object else args[1:]
+            args = args if not ignore_object else args[1:]
             mkwargs = {'timeout': decorated.cache_timeout} if decorated else {}
             fname, version_data = self._memoize_version(f, *args, **mkwargs)
 
